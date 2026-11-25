@@ -1,0 +1,260 @@
+:root {
+	--tj-bg: #fafafa;
+	--tj-text: #0f172a;
+	--tj-muted: #94a3b8;
+	--tj-border: #e2e8f0;
+	--tj-chip: #f1f5f9;
+	--tj-tabbar-h: 68px;
+	--tj-safe-bottom: env(safe-area-inset-bottom, 0px);
+	--bs-body-bg: var(--tj-bg);
+	--bs-body-color: var(--tj-text);
+}
+
+html,
+body {
+	background: var(--tj-bg);
+	overscroll-behavior-y: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.app-main {
+	max-width: 640px;
+	padding-top: max(1.25rem, env(safe-area-inset-top));
+	padding-bottom: calc(var(--tj-tabbar-h) + var(--tj-safe-bottom) + 6rem);
+}
+
+.page-title {
+	font-weight: 700;
+	font-size: 1.75rem;
+	margin: 0;
+}
+
+/* Round floating icon buttons in page headers */
+.btn-circle {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: #fff;
+	border: 0;
+	box-shadow: 0 2px 10px rgb(15 23 42 / 8%);
+	font-size: 1.25rem;
+	color: var(--tj-text);
+}
+.btn-circle.active {
+	background: var(--tj-text);
+	color: #fff;
+}
+
+/* ---- Bottom tab bar ---- */
+.tabbar {
+	position: fixed;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: calc(0.75rem + var(--tj-safe-bottom));
+	width: calc(100% - 2rem);
+	max-width: 600px;
+	height: var(--tj-tabbar-h);
+	background: #fff;
+	border-radius: 999px;
+	box-shadow: 0 6px 24px rgb(15 23 42 / 12%);
+	display: flex;
+	padding: 6px;
+	z-index: 1030;
+}
+.tabbar-item {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	border-radius: 999px;
+	text-decoration: none;
+	color: #64748b;
+	font-size: 0.75rem;
+	gap: 2px;
+}
+.tabbar-item i {
+	font-size: 1.3rem;
+	line-height: 1;
+}
+.tabbar-item.active {
+	background: var(--tj-chip);
+	color: var(--tj-text);
+	font-weight: 600;
+}
+
+/* ---- Tap buttons ---- */
+.tap-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.9rem;
+}
+@media (min-width: 560px) {
+	.tap-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+.tap-card {
+	position: relative;
+	min-height: 118px;
+	border-radius: 28px;
+	padding: 1rem 1.1rem;
+	color: #fff;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	box-shadow: 0 6px 16px rgb(15 23 42 / 12%);
+	cursor: pointer;
+	user-select: none;
+	transition: transform 0.1s ease;
+}
+.tap-card:active {
+	transform: scale(0.96);
+}
+.tap-card.tapped {
+	animation: tap-pulse 0.45s ease;
+}
+@keyframes tap-pulse {
+	0% {
+		box-shadow: 0 0 0 0 rgb(255 255 255 / 90%), 0 6px 16px rgb(15 23 42 / 12%);
+	}
+	100% {
+		box-shadow: 0 0 0 14px rgb(255 255 255 / 0%), 0 6px 16px rgb(15 23 42 / 12%);
+	}
+}
+.tap-time {
+	font-size: 0.85rem;
+	opacity: 0.85;
+}
+.tap-count {
+	min-width: 30px;
+	height: 30px;
+	padding: 0 8px;
+	border-radius: 999px;
+	background: rgb(0 0 0 / 22%);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 700;
+	font-size: 0.9rem;
+}
+.tap-name {
+	font-weight: 700;
+	font-size: 1.1rem;
+	line-height: 1.2;
+	text-shadow: 0 1px 2px rgb(0 0 0 / 15%);
+	overflow-wrap: anywhere;
+}
+.tap-sub {
+	font-size: 0.78rem;
+	opacity: 0.9;
+}
+.card-icon {
+	width: 32px;
+	height: 32px;
+	border-radius: 10px;
+	border: 0;
+	background: rgb(0 0 0 / 22%);
+	color: #fff;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+.card-icon:disabled {
+	opacity: 0.35;
+}
+
+/* Floating "last record" pill above the tab bar */
+.last-pill {
+	position: fixed;
+	left: 50%;
+	transform: translateX(-50%);
+	width: calc(100% - 2rem);
+	max-width: 600px;
+	bottom: calc(var(--tj-tabbar-h) + var(--tj-safe-bottom) + 1.5rem);
+	background: #fff;
+	border-radius: 999px;
+	box-shadow: 0 6px 24px rgb(15 23 42 / 10%);
+	padding: 0.7rem 0.75rem 0.7rem 1.4rem;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	z-index: 1020;
+}
+
+.color-dot {
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	border-radius: 4px;
+	flex-shrink: 0;
+}
+
+/* ---- Bottom sheet (Bootstrap offcanvas, driven by Svelte state) ---- */
+.offcanvas.sheet {
+	height: auto;
+	max-height: 90vh;
+	border-radius: 28px 28px 0 0;
+	padding-bottom: var(--tj-safe-bottom);
+	animation: sheet-up 0.2s ease-out;
+}
+@keyframes sheet-up {
+	from {
+		transform: translateY(40%);
+		opacity: 0.4;
+	}
+}
+
+.swatch {
+	width: 52px;
+	height: 52px;
+	border-radius: 14px;
+	border: 0;
+	color: #fff;
+	font-size: 1.4rem;
+}
+
+.chip {
+	border: 0;
+	background: var(--tj-chip);
+	border-radius: 999px;
+	padding: 0.45rem 1rem;
+	white-space: nowrap;
+}
+
+.form-control.rounded-pill,
+.form-select.rounded-pill {
+	padding-left: 1.25rem;
+}
+
+/* Segmented control on top of Bootstrap's btn-group */
+.segmented {
+	background: var(--tj-chip);
+	border-radius: 14px;
+	padding: 4px;
+	display: flex;
+}
+.segmented button {
+	flex: 1;
+	border: 0;
+	background: transparent;
+	border-radius: 10px;
+	padding: 0.5rem 0.25rem;
+	color: var(--tj-muted);
+	font-weight: 500;
+}
+.segmented button.active {
+	background: #fff;
+	color: var(--tj-text);
+	font-weight: 600;
+	box-shadow: 0 1px 4px rgb(15 23 42 / 12%);
+}
+
+.surface {
+	background: #fff;
+	border: 1px solid var(--tj-border);
+	border-radius: 24px;
+}
