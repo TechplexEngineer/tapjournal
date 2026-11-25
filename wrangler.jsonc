@@ -12,10 +12,9 @@
 	},
 	"d1_databases": [
 		{
-			"binding": "DB",
+			"binding": "D1_DB",
 			"database_name": "tapjournal",
-			// Replace with the id printed by `npx wrangler d1 create tapjournal` before deploying.
-			"database_id": "00000000-0000-0000-0000-000000000000",
+			"database_id": "59895cd7-1ef8-46f3-8663-275348d2c9e6",
 			"migrations_dir": "migrations"
 		}
 	],
