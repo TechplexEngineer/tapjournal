@@ -2,7 +2,7 @@
 	import { formatDate, relativeDay, startOfDay, startOfMonth, startOfWeek, startOfYear } from '#lib/date.ts';
 	import { computeStats } from '#lib/stats.ts';
 	import { store } from '#lib/store.svelte.ts';
-	import { PALETTE } from '#lib/theme.ts';
+	import { shades } from '#lib/theme.ts';
 	import { childrenOf, descendantIds, flattenTree, labelOf } from '#lib/tree.ts';
 
 	type Period = 'all' | 'day' | 'week' | 'month' | 'year';
@@ -38,7 +38,7 @@
 
 	const hero = $derived(
 		selected
-			? `linear-gradient(135deg, ${PALETTE[selected.color].dark}, ${PALETTE[selected.color].light})`
+			? `linear-gradient(135deg, ${shades(selected.color).dark}, ${shades(selected.color).light})`
 			: 'linear-gradient(135deg, #C2410C, #FB923C)'
 	);
 
@@ -134,11 +134,11 @@
 				{@const pct = stats.total ? Math.round((row.count / stats.total) * 100) : 0}
 				<button class="btn w-100 text-start p-0 border-0 mb-3" onclick={() => (selId = row.id)} disabled={row.id === selId}>
 					<div class="d-flex justify-content-between mb-1">
-						<span class="fw-semibold"><span class="color-dot me-2 align-middle" style:background={PALETTE[row.color].base}></span>{row.name}</span>
+						<span class="fw-semibold"><span class="color-dot me-2 align-middle" style:background={shades(row.color).base}></span>{row.name}</span>
 						<span class="text-secondary">{row.count} · {pct}%</span>
 					</div>
 					<div class="progress" style="height: 8px" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
-						<div class="progress-bar" style:width="{pct}%" style:background={PALETTE[row.color].base}></div>
+						<div class="progress-bar" style:width="{pct}%" style:background={shades(row.color).base}></div>
 					</div>
 				</button>
 			{/each}

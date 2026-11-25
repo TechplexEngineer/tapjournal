@@ -1,4 +1,4 @@
-import { COLOR_KEYS, CYCLES, NAME_MAX } from './theme.ts';
+import { CYCLES, isButtonColor, NAME_MAX } from './theme.ts';
 import type { TapButton, TapRecord } from './types.ts';
 
 /**
@@ -67,7 +67,7 @@ export function parseButton(v: unknown): TapButton | null {
 	return {
 		id: v.id,
 		name,
-		color: COLOR_KEYS.includes(v.color as never) ? (v.color as TapButton['color']) : 'blue',
+		color: isButtonColor(v.color) ? (v.color.toLowerCase() as TapButton['color']) : 'blue',
 		resetCycle: CYCLE_KEYS.includes(v.resetCycle as string) ? (v.resetCycle as TapButton['resetCycle']) : 'daily',
 		parentId: v.parentId,
 		order: isNum(v.order) ? Math.trunc(v.order) : 0,

@@ -11,7 +11,7 @@
 		WEEKDAYS_SHORT
 	} from '#lib/date.ts';
 	import { store } from '#lib/store.svelte.ts';
-	import { PALETTE } from '#lib/theme.ts';
+	import { shades } from '#lib/theme.ts';
 	import { pathOf } from '#lib/tree.ts';
 	import type { TapRecord } from '#lib/types.ts';
 
@@ -69,7 +69,7 @@
 			{#if showDate}<span class="d-block small">{formatDate(r.timestamp)}</span>{/if}
 			{formatTime(r.timestamp)}
 		</span>
-		<span class="color-dot" style:background={leaf ? PALETTE[leaf.color].base : '#ccc'}></span>
+		<span class="color-dot" style:background={leaf ? shades(leaf.color).base : '#ccc'}></span>
 		<span class="flex-grow-1 min-w-0">
 			{#each path.slice(0, -1) as p (p.id)}<span class="text-secondary">{p.name} › </span>{/each}
 			<span class="fw-semibold fs-5">{leaf?.name ?? 'Deleted button'}</span>

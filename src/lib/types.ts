@@ -2,6 +2,9 @@ export type ResetCycle = 'daily' | 'weekly' | 'monthly' | 'yearly';
 
 export type ColorKey = 'blue' | 'teal' | 'purple' | 'orange' | 'red' | 'pink' | 'green' | 'slate';
 
+/** A preset palette key, or a custom colour as `#rrggbb`. */
+export type ButtonColor = ColorKey | `#${string}`;
+
 /**
  * A tap button. Buttons form a tree via `parentId`: a button with children acts
  * as a group (tapping it reveals its subcategories), a button without children
@@ -10,7 +13,7 @@ export type ColorKey = 'blue' | 'teal' | 'purple' | 'orange' | 'red' | 'pink' | 
 export interface TapButton {
   id: string;
   name: string;
-  color: ColorKey;
+  color: ButtonColor;
   resetCycle: ResetCycle;
   parentId: string | null;
   order: number;

@@ -5,7 +5,7 @@
 	import { cycleStart, formatHeaderDate, formatTime, relativeShort, startOfDay } from '#lib/date.ts';
 	import { useNow } from '#lib/now.svelte.ts';
 	import { store } from '#lib/store.svelte.ts';
-	import { gradient, PALETTE } from '#lib/theme.ts';
+	import { gradient, shades, textOn } from '#lib/theme.ts';
 	import { childrenOf, descendantIds, labelOf, pathOf } from '#lib/tree.ts';
 	import type { TapButton } from '#lib/types.ts';
 
@@ -125,6 +125,7 @@
 				class="tap-card"
 				class:tapped={tappedId === b.id}
 				style:background={gradient(b.color)}
+				style:color={textOn(b.color)}
 				role="button"
 				tabindex="0"
 				onclick={() => press(b)}
@@ -182,7 +183,7 @@
 		{#if lastRecord}
 			{@const path = pathOf(store.byId, lastRecord.buttonId)}
 			{@const b = path.at(-1)}
-			<span class="color-dot" style:background={b ? PALETTE[b.color].base : '#ccc'}></span>
+			<span class="color-dot" style:background={b ? shades(b.color).base : '#ccc'}></span>
 			<a href="/records" class="text-dark text-decoration-none text-truncate lh-sm">
 				<span class="fw-semibold">{b?.name ?? 'Deleted button'}</span>
 				{#if path.length > 1}<span class="d-block small text-secondary text-truncate">{path.slice(0, -1).map((p) => p.name).join(' › ')}</span>{/if}

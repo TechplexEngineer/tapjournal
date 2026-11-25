@@ -1,6 +1,6 @@
 import { applyOp, type Journal, type Op } from './ops.ts';
 import { childrenOf, descendantIds, indexButtons } from './tree.ts';
-import type { ColorKey, ResetCycle, Settings, TapButton, TapRecord } from './types.ts';
+import type { ButtonColor, ResetCycle, Settings, TapButton, TapRecord } from './types.ts';
 
 const CACHE_KEY = 'tapjournal:data';
 const OUTBOX_KEY = 'tapjournal:outbox';
@@ -9,7 +9,7 @@ const SETTINGS_KEY = 'tapjournal:settings';
 export interface SaveButtonInput {
 	id?: string;
 	name: string;
-	color: ColorKey;
+	color: ButtonColor;
 	resetCycle: ResetCycle;
 	parentId: string | null;
 	/** Full desired list of direct subcategories; existing ones not listed are deleted. */

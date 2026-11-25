@@ -3,8 +3,8 @@
 	import Sheet from './Sheet.svelte';
 	import { store } from '../store.svelte.ts';
 	import { childrenOf, descendantIds, labelOf } from '../tree.ts';
-	import { COLOR_KEYS, CYCLES, NAME_MAX, PALETTE } from '../theme.ts';
-	import type { ColorKey, ResetCycle, TapButton } from '../types.ts';
+	import { COLOR_KEYS, CYCLES, isCustomColor, NAME_MAX, PALETTE, shades, textOn } from '../theme.ts';
+	import type { ButtonColor, ResetCycle, TapButton } from '../types.ts';
 
 	let {
 		open,
@@ -22,7 +22,10 @@
 	const SUGGESTIONS = ['Coffee', 'Water', 'Meal', 'Snack', 'Medicine', 'Workout', 'Sleep', 'Bathroom'];
 
 	let name = $state('');
-	let color = $state<ColorKey>('blue');
+	let color = $state<ButtonColor>('blue');
+	/** Last custom colour picked, kept while trying presets. */
+	let customColor = $state('#7c3aed');
+	const custom = $derived(isCustomColor(color));
 	let cycle = $state<ResetCycle>('daily');
 	let subs = $state<{ key: string; id?: string; name: string }[]>([]);
 	let newSub = $state('');
@@ -37,6 +40,7 @@
 			const parent = effectiveParentId ? store.byId.get(effectiveParentId) : undefined;
 			name = button?.name ?? '';
 			color = button?.color ?? parent?.color ?? 'blue';
+			if (isCustomColor(color)) customColor = color;
 			cycle = button?.resetCycle ?? parent?.resetCycle ?? 'daily';
 			subs = button
 				? childrenOf(store.buttons, button.id).map((c) => ({ key: c.id, id: c.id, name: c.name }))
@@ -127,6 +131,22 @@
 					{#if color === key}<i class="bi bi-check-lg"></i>{/if}
 				</button>
 			{/each}
+			<!-- Custom colour: the transparent native picker sits on top of the swatch. -->
+			<div
+				class="swatch swatch-custom"
+				class:picked={custom}
+				style:background={custom ? color : undefined}
+				style:color={custom ? textOn(color) : undefined}
+			>
+				<i class="bi {custom ? 'bi-check-lg' : 'bi-eyedropper'}"></i>
+				<input
+					type="color"
+					aria-label="Custom color"
+					value={customColor}
+					onclick={() => (color = customColor as ButtonColor)}
+					oninput={(e) => (customColor = color = e.currentTarget.value as ButtonColor)}
+				/>
+			</div>
 		</div>
 
 		<div class="fw-semibold mt-4 mb-2">Count Reset Cycle</div>
@@ -143,7 +163,7 @@
 		</div>
 		{#each subs as sub, i (sub.key)}
 			<div class="input-group mb-2">
-				<span class="input-group-text bg-white"><span class="color-dot" style:background={PALETTE[color].base}></span></span>
+				<span class="input-group-text bg-white"><span class="color-dot" style:background={shades(color).base}></span></span>
 				<input class="form-control" maxlength={NAME_MAX} bind:value={sub.name} aria-label="Subcategory name" />
 				<button type="button" class="btn btn-outline-danger" aria-label="Remove {sub.name}" onclick={() => subs.splice(i, 1)}>
 					<i class="bi bi-x-lg"></i>
